@@ -7,6 +7,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+# Создаём папку для статики и собираем её
+RUN python manage.py collectstatic --noinput
+
 EXPOSE 80
 
 CMD ["gunicorn", "nn_project.wsgi:application", "--bind", "0.0.0.0:80"]
