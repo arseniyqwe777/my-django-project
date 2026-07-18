@@ -7,8 +7,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Создаём папку для статики
-RUN mkdir -p staticfiles
+# Удаляем старую БД и создаём новую
+RUN rm -f db.sqlite3
+RUN python manage.py migrate --noinput
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 80
