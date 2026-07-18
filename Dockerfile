@@ -7,7 +7,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Создаём папку для статики и собираем её
+# Создаём папку для статики
+RUN mkdir -p staticfiles
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 80
