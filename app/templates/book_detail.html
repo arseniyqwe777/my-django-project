@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'main' %}">Главная</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'all_books' %}">Все книги</a></li>
+                <li class="breadcrumb-item active">{{ book.title|truncatewords:5 }}</li>
+            </ol>
+        </nav>
+
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">
+                        <i class="fas fa-book"></i> {{ book.title }}
+                    </h2>
+                    {% if user.is_authenticated %}
+                    <div class="btn-group">
+                        <a href="{% url 'edit_book' book.id %}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-edit"></i> Редактировать книгу
+                        </a>
+                        <a href="{% url 'delete_book' book.id %}" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash"></i> Удалить книгу
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        {% if book_authors %}
+                        <div class="mb-3">
+                            <h5><i class="fas fa-users"></i> Авторы и составители:</h5>
+                            <ul class="list-unstyled">
+                                {% for ba in book_authors %}
+                                <li>
+                                    <i class="fas fa-user"></i>
+                                    <a href="{% url 'author_detail' ba.author.id %}">
+                                        {{ ba.author.full_name }}
+                                    </a>
+                                    <span class="badge bg-secondary">{{ ba.get_role_display }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <table class="table table-sm table-borderless">
+                            <tr>
+                                <td width="150"><strong>Инвентарный номер:</strong></td>
+                                <td><code class="bg-light p-1">{{ book.inventory_number }}</code></td>
+                            </tr>
+                            {% if book.publisher %}
+                            <tr>
+                                <td><strong>Издательство:</strong></td>
+                                <td>{{ book.publisher }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if book.publication_year %}
+                            <tr>
+                                <td><strong>Год издания:</strong></td>
+                                <td>{{ book.publication_year }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if book.pages %}
+                            <tr>
+                                <td><strong>Страниц:</strong></td>
+                                <td>{{ book.pages }}</td>
+                            </tr>
+                            {% endif %}
+                        </table>
+
+                        {% if book.description %}
+                        <div class="mt-3">
+                            <h5><i class="fas fa-align-left"></i> Описание:</h5>
+                            <p class="text-muted">{{ book.description|linebreaks }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if book.cover_image %}
+                    <div class="col-md-3 text-center">
+                        <img src="{{ book.cover_image.url }}" class="img-fluid rounded shadow"
+                             alt="{{ book.title }}" style="max-height: 250px;">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-list"></i> Содержание сборника
+                        <span class="badge bg-primary">{{ works|length }}</span>
+                    </h4>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'add_work' book.id %}" class="btn btn-sm btn-success">
+                        <i class="fas fa-plus"></i> Добавить произведение
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body p-0">
+                {% if works %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th style="width: 25%">Автор</th>
+                                <th style="width: 45%">Название произведения</th>
+                                <th style="width: 15%">Тип</th>
+                                <th style="width: 15%">Страницы</th>
+                                {% if user.is_authenticated %}
+                                <th style="width: 5%">Действия</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for work in works %}
+                            <tr>
+                                <td>
+                                    <i class="fas fa-user"></i>
+                                    <a href="{% url 'author_detail' work.author.id %}">
+                                        {{ work.author.full_name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <strong>{{ work.title }}</strong>
+                                    {% if work.original_title %}
+                                    <br><small class="text-muted">{{ work.original_title }}</small>
+                                    {% endif %}
+                                    {% if work.description %}
+                                    <br><small class="text-muted">
+                                        <i class="fas fa-info-circle"></i> {{ work.description|truncatewords:15 }}
+                                    </small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">
+                                        {{ work.get_work_type_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if work.first_page %}
+                                        <i class="fas fa-file"></i>
+                                        {% if work.last_page %}
+                                            {{ work.first_page }}-{{ work.last_page }}
+                                        {% else %}
+                                            стр. {{ work.first_page }}
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                {% if user.is_authenticated %}
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{% url 'edit_work' work.id %}"
+                                           class="btn btn-outline-primary"
+                                           title="Редактировать">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'delete_work' work.id %}"
+                                           class="btn btn-outline-danger"
+                                           title="Удалить">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center p-5">
+                    <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+                    <h5>В этом сборнике пока нет произведений</h5>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'add_work' book.id %}" class="btn btn-primary mt-2">
+                        <i class="fas fa-plus"></i> Добавить первое произведение
+                    </a>
+                    {% else %}
+                    <p class="text-muted">Войдите в систему, чтобы добавлять произведения</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

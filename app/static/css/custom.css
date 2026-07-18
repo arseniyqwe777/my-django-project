@@ -1,0 +1,516 @@
+/* ============================================
+   ФОЛИАНТ-КАРЕЛИЯ - УНИКАЛЬНЫЙ БИБЛИОТЕЧНЫЙ ДИЗАЙН
+   ============================================ */
+
+/* Импорт шрифтов */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap');
+
+/* CSS переменные - библиотечная тема */
+:root {
+    --book-brown: #8B5A2B;
+    --book-dark: #5C3A1E;
+    --book-gold: #D4A843;
+    --book-light: #F5F0E6;
+    --book-paper: #FFFEF7;
+    --book-spine: #A0724A;
+    --leather: #6B3A1F;
+    --ink: #2C1810;
+    --parchment: #FDF5E6;
+    --page-edge: #E8DCC8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, var(--parchment) 0%, #E8DCC8 100%);
+    min-height: 100vh;
+    position: relative;
+    color: var(--ink);
+}
+
+/* Книжная текстура фона */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M10 10 L190 10 M10 30 L190 30 M10 50 L190 50' stroke='%23D4A843' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ========== НАВИГАЦИЯ - КОРЕШКИ КНИГ ========== */
+.navbar {
+    background: linear-gradient(135deg, var(--book-dark) 0%, var(--leather) 100%);
+    border-bottom: 3px solid var(--book-gold);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    padding: 0.8rem 0;
+}
+
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--book-gold) 0%, #FFE4A0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+}
+
+.navbar-brand i {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: var(--book-gold);
+    margin-right: 8px;
+}
+
+.nav-link {
+    color: var(--book-light) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--book-gold) !important;
+    transform: translateY(-2px);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--book-gold);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+/* ========== ГЛАВНЫЙ ПОИСК - ОТКРЫТАЯ КНИГА ========== */
+.search-container {
+    background: linear-gradient(135deg, var(--book-dark) 0%, var(--leather) 100%);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.search-container::before {
+    content: '“';
+    position: absolute;
+    font-size: 200px;
+    font-family: 'Playfair Display', serif;
+    color: rgba(255,255,255,0.05);
+    bottom: -50px;
+    right: 20px;
+    pointer-events: none;
+}
+
+.search-container h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+.search-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--book-gold);
+    border-radius: 3px;
+}
+
+/* ========== СТАТИСТИКА - ЗАКЛАДКИ ========== */
+.stats-card {
+    background: var(--book-paper);
+    border-radius: 15px;
+    padding: 1.8rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(139, 90, 43, 0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--book-gold), transparent);
+    transition: left 0.5s ease;
+}
+
+.stats-card:hover::before {
+    left: 100%;
+}
+
+.stats-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    border-color: var(--book-gold);
+}
+
+.stats-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--book-dark) 0%, var(--book-gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.stats-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--book-brown);
+    margin-top: 0.5rem;
+}
+
+/* ========== КАРТОЧКИ КНИГ - ОБЛОЖКИ ========== */
+.card {
+    background: var(--book-paper);
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    position: relative;
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--book-gold), var(--book-brown), var(--book-gold));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.card:hover::after {
+    transform: scaleX(1);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.card-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--book-dark);
+}
+
+/* ========== КАРТОЧКИ ПРОИЗВЕДЕНИЙ ========== */
+.work-card {
+    background: linear-gradient(135deg, var(--book-paper) 0%, #FFF8F0 100%);
+    border-left: 4px solid var(--book-gold);
+    transition: all 0.3s ease;
+}
+
+.work-card:hover {
+    transform: translateX(8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* ========== ТАБЛИЦЫ ========== */
+.table {
+    background: var(--book-paper);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: linear-gradient(135deg, var(--book-dark) 0%, var(--leather) 100%);
+}
+
+.table thead th {
+    color: var(--book-paper);
+    font-weight: 600;
+    border: none;
+    padding: 1rem;
+}
+
+.table tbody tr {
+    transition: background 0.2s ease;
+    border-bottom: 1px solid rgba(139, 90, 43, 0.1);
+}
+
+.table tbody tr:hover {
+    background: rgba(212, 168, 67, 0.05);
+}
+
+/* ========== ФОРМЫ - СТАРИННЫЙ СТИЛЬ ========== */
+.form-control, .form-select {
+    background: var(--book-paper);
+    border: 1px solid rgba(139, 90, 43, 0.2);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    transition: all 0.3s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--book-gold);
+    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.2);
+    background: white;
+}
+
+/* ========== КНОПКИ ========== */
+.btn-primary {
+    background: linear-gradient(135deg, var(--book-brown) 0%, var(--book-dark) 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 0.6rem 1.8rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--book-dark) 0%, var(--leather) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(92, 58, 30, 0.3);
+}
+
+.btn-outline-primary {
+    border-color: var(--book-brown);
+    color: var(--book-brown);
+    border-radius: 20px;
+}
+
+.btn-outline-primary:hover {
+    background: var(--book-brown);
+    border-color: var(--book-brown);
+}
+
+/* ========== ПОДВАЛ ========== */
+footer {
+    background: linear-gradient(135deg, var(--book-dark) 0%, var(--leather) 100%);
+    color: var(--book-light);
+    padding: 2rem 0;
+    margin-top: 3rem;
+    border-top: 3px solid var(--book-gold);
+    position: relative;
+}
+
+footer::before {
+    content: '❧';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 30px;
+    color: var(--book-gold);
+    background: var(--book-dark);
+    padding: 0 20px;
+}
+
+/* ========== ПАГИНАЦИЯ ========== */
+.pagination .page-link {
+    background: var(--book-paper);
+    border: 1px solid rgba(139, 90, 43, 0.2);
+    color: var(--book-dark);
+    border-radius: 8px;
+    margin: 0 3px;
+    transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+    background: var(--book-gold);
+    border-color: var(--book-gold);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.pagination .active .page-link {
+    background: linear-gradient(135deg, var(--book-brown) 0%, var(--book-dark) 100%);
+    border-color: var(--book-brown);
+    color: white;
+}
+
+/* ========== БЭДЖИ ========== */
+.badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.bg-primary {
+    background: linear-gradient(135deg, var(--book-brown) 0%, var(--book-dark) 100%) !important;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%) !important;
+}
+
+.bg-info {
+    background: linear-gradient(135deg, #6B5B95 0%, #5A4A7A 100%) !important;
+}
+
+/* ========== ХЛЕБНЫЕ КРОШКИ ========== */
+.breadcrumb {
+    background: rgba(255,255,255,0.6);
+    padding: 0.8rem 1rem;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+}
+
+.breadcrumb-item a {
+    color: var(--book-brown);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--book-gold);
+}
+
+/* ========== АНИМАЦИИ ========== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card, .stats-card, .work-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* ========== СКРОЛЛБАР ========== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--parchment);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--book-brown);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--book-dark);
+}
+
+/* ========== АДАПТИВНОСТЬ ========== */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .search-container {
+        padding: 1.5rem;
+    }
+
+    .search-container h2 {
+        font-size: 1.3rem;
+    }
+
+    .stats-number {
+        font-size: 1.8rem;
+    }
+
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+}
+
+/* ========== СПЕЦИАЛЬНЫЕ ЭФФЕКТЫ ========== */
+/* Эффект "старой бумаги" для карточек */
+.card, .stats-card, .search-container {
+    position: relative;
+}
+
+.card::before, .stats-card::before {
+    display: none;
+}
+
+/* Книжная закладка */
+.bookmark {
+    position: absolute;
+    top: -5px;
+    right: 20px;
+    width: 40px;
+    height: 60px;
+    background: var(--book-gold);
+    border-radius: 0 0 5px 5px;
+    z-index: 10;
+}
+
+/* Градиентный текст для заголовков */
+.gradient-text {
+    background: linear-gradient(135deg, var(--book-dark) 0%, var(--book-gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Лампочка "читальный зал" */
+.ambient-light {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, rgba(212,168,67,0.03) 0%, transparent 70%);
+    z-index: 9999;
+}

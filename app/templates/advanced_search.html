@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-search"></i> Расширенный поиск произведений
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="GET" action="{% url 'advanced_search' %}">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="q" class="form-label">Ключевые слова</label>
+                            <input type="text" name="q" id="q" class="form-control"
+                                   placeholder="Название произведения или фамилия автора..."
+                                   value="{{ query|default:'' }}">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="work_type" class="form-label">Тип произведения</label>
+                            <select name="work_type" id="work_type" class="form-select">
+                                <option value="">Все типы</option>
+                                <option value="story" {% if work_type == 'story' %}selected{% endif %}>Рассказ</option>
+                                <option value="poem" {% if work_type == 'poem' %}selected{% endif %}>Стихотворение</option>
+                                <option value="article" {% if work_type == 'article' %}selected{% endif %}>Статья</option>
+                                <option value="chapter" {% if work_type == 'chapter' %}selected{% endif %}>Глава</option>
+                                <option value="excerpt" {% if work_type == 'excerpt' %}selected{% endif %}>Отрывок</option>
+                                <option value="novella" {% if work_type == 'novella' %}selected{% endif %}>Повесть</option>
+                                <option value="essay" {% if work_type == 'essay' %}selected{% endif %}>Эссе</option>
+                                <option value="play" {% if work_type == 'play' %}selected{% endif %}>Пьеса</option>
+                                <option value="other" {% if work_type == 'other' %}selected{% endif %}>Другое</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label for="year_from" class="form-label">Год публикации от</label>
+                            <input type="number" name="year_from" id="year_from" class="form-control"
+                                   placeholder="Например: 1800"
+                                   value="{{ year_from|default:'' }}">
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label for="year_to" class="form-label">Год публикации до</label>
+                            <input type="number" name="year_to" id="year_to" class="form-control"
+                                   placeholder="Например: 1900"
+                                   value="{{ year_to|default:'' }}">
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-search"></i> Найти
+                        </button>
+                        <a href="{% url 'advanced_search' %}" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-eraser"></i> Очистить
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle"></i> Подсказки по поиску
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>Поиск работает по названию произведения и фамилии автора</li>
+                    <li>Можно указать диапазон годов публикации</li>
+                    <li>Можно фильтровать по типу произведения (рассказ, стихотворение и т.д.)</li>
+                    <li>Для поиска книг используйте основной поиск на главной странице</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

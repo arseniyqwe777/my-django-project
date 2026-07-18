@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-edit"></i> {{ title }}
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        Редактирование книги: <strong>{{ book.title }}</strong>
+                        <br>Текущий инвентарный номер: <code>{{ book.inventory_number }}</code>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">
+                            Название книги <span class="text-danger">*</span>
+                        </label>
+                        {{ form.title }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.inventory_number.id_for_label }}" class="form-label">
+                            Инвентарный номер <span class="text-danger">*</span>
+                        </label>
+                        {{ form.inventory_number }}
+                        <small class="form-text text-muted">Пятизначный номер (только цифры, например: 00001)</small>
+                        {% if form.inventory_number.errors %}
+                        <div class="alert alert-danger mt-1">{{ form.inventory_number.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.publisher.id_for_label }}" class="form-label">
+                                Издательство
+                            </label>
+                            {{ form.publisher }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.publication_year.id_for_label }}" class="form-label">
+                                Год издания
+                            </label>
+                            {{ form.publication_year }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.pages.id_for_label }}" class="form-label">
+                                Страниц
+                            </label>
+                            {{ form.pages }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Авторы книги</label>
+                        <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
+                            {% for author in authors %}
+                            <div class="form-check">
+                                <input type="checkbox" name="authors" value="{{ author.id }}"
+                                       class="form-check-input" id="author_{{ author.id }}"
+                                       {% if author.id in selected_authors %}checked{% endif %}>
+                                <label class="form-check-label" for="author_{{ author.id }}">
+                                    {{ author.full_name }}
+                                </label>
+                            </div>
+                            {% empty %}
+                            <p class="text-muted">Нет добавленных авторов.
+                                <a href="{% url 'add_author' %}">Добавьте автора</a>
+                            </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">
+                            Описание
+                        </label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.cover_image.id_for_label }}" class="form-label">
+                            Обложка
+                        </label>
+                        {{ form.cover_image }}
+                        {% if book.cover_image %}
+                        <div class="mt-2">
+                            <img src="{{ book.cover_image.url }}" style="max-height: 100px;" class="img-thumbnail">
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'book_detail' book.id %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Отмена
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Сохранить изменения
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
