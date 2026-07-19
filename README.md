@@ -120,7 +120,7 @@ nn_project/
 Студент специальности 09.02.07 «Информационные системы и программирование»
 
 [![GitHub](https://img.shields.io/badge/GitHub-arseniyqwe777-181717?logo=github)](https://github.com/arseniyqwe777)
-[![Telegram](https://img.shields.io/badge/Telegram-@arseniy-26A5E4?logo=telegram)](https://t.me/arseniy)
+[![Telegram](https://img.shields.io/badge/Telegram-@arseniyqwe777-26A5E4?logo=telegram)](https://t.me/arseniy)
 
 ---
 
