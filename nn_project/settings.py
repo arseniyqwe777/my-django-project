@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
     'app',
 ]
 
@@ -54,10 +55,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'nn_project.wsgi.application'
 
+# ============================================
+# БАЗА ДАННЫХ (POSTGRESQL)
+# ============================================
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Friendly Dunnock',
+        'USER': 'Friendly Dunnock',
+        'PASSWORD': '1ar7s2en70SENYA@#',
+        'HOST': '104.171.139.74',
+        'PORT': '5432',
     }
 }
 
@@ -81,14 +90,38 @@ TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'app', 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# ============================================
+# СТАТИЧЕСКИЕ ФАЙЛЫ
+# ============================================
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'app', 'media')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'app' / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Logging
+# ============================================
+# МЕДИА-ФАЙЛЫ
+# ============================================
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# ============================================
+# БЕЗОПАСНОСТЬ (HTTPS и CSRF)
+# ============================================
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://arseniyqwe777-my-django-project-d6f4.twc1.net',
+    'http://arseniyqwe777-my-django-project-d6f4.twc1.net',
+]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# ============================================
+# LOGGING (ОТЛАДКА)
+# ============================================
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -116,42 +149,14 @@ LOGGING = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# Разрешаем запросы с вашего домена по HTTPS
-CSRF_TRUSTED_ORIGINS = [
-    'https://arseniyqwe777-my-django-project-d6f4.twc1.net',
-    'http://arseniyqwe777-my-django-project-d6f4.twc1.net',  # на всякий случай
-]
-
-# Рекомендуемые настройки для безопасности
-CSRF_COOKIE_SECURE = True      # передавать CSRF-токен только по HTTPS
-SESSION_COOKIE_SECURE = True   # передавать сессию только по HTTPS
-# ============================================
-# НАСТРОЙКИ ДЛЯ БЕЗОПАСНОСТИ
-# ============================================
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://arseniyqwe777-my-django-project-d6f4.twc1.net',
-    'http://arseniyqwe777-my-django-project-d6f4.twc1.net',
-]
-
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
 
 # ============================================
-# НАСТРОЙКИ ДЛЯ МЕДИА
-# ============================================
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-# ============================================
-# НАСТРОЙКИ ДЛЯ EMAIL (ОПЦИОНАЛЬНО)
+# EMAIL (ОПЦИОНАЛЬНО)
 # ============================================
 
 NOTIFICATION_EMAIL = 'your-email@example.com'
 DEFAULT_FROM_EMAIL = 'noreply@bookbridge.ru'
 
-# Если хочешь настроить отправку email (раскомментируй и настрой)
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.yandex.ru'
 # EMAIL_PORT = 587
