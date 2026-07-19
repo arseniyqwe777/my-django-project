@@ -63,7 +63,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Friendly Dunnock',
-        'USER': 'Friendly Dunnock',
+        'USER': 'gen_user',
         'PASSWORD': '1ar7s2en70SENYA@#',
         'HOST': '104.171.139.74',
         'PORT': '5432',
