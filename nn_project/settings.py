@@ -125,3 +125,36 @@ CSRF_TRUSTED_ORIGINS = [
 # Рекомендуемые настройки для безопасности
 CSRF_COOKIE_SECURE = True      # передавать CSRF-токен только по HTTPS
 SESSION_COOKIE_SECURE = True   # передавать сессию только по HTTPS
+# ============================================
+# НАСТРОЙКИ ДЛЯ БЕЗОПАСНОСТИ
+# ============================================
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://arseniyqwe777-my-django-project-d6f4.twc1.net',
+    'http://arseniyqwe777-my-django-project-d6f4.twc1.net',
+]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# ============================================
+# НАСТРОЙКИ ДЛЯ МЕДИА
+# ============================================
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# ============================================
+# НАСТРОЙКИ ДЛЯ EMAIL (ОПЦИОНАЛЬНО)
+# ============================================
+
+NOTIFICATION_EMAIL = 'your-email@example.com'
+DEFAULT_FROM_EMAIL = 'noreply@bookbridge.ru'
+
+# Если хочешь настроить отправку email (раскомментируй и настрой)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.yandex.ru'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your-email@example.com'
+# EMAIL_HOST_PASSWORD = 'your-password'
