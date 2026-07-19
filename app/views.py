@@ -121,27 +121,39 @@ def author_detail(request, author_id):
 
 
 def advanced_search(request):
-    """Расширенный поиск"""
+    """Расширенный поиск с фильтрацией по типу и году публикации"""
     query = request.GET.get('q', '').strip()
     work_type = request.GET.get('work_type', '')
     year_from = request.GET.get('year_from', '')
     year_to = request.GET.get('year_to', '')
 
-    works = Work.objects.select_related('author', 'book')
+    # Начинаем с пустого QuerySet для произведений
+    works = Work.objects.select_related('author', 'book').all()
 
+    # Применяем фильтры, только если параметры не пустые
     if query:
         works = works.filter(
-            Q(title__icontains=query) | Q(author__last_name__icontains=query)
+            Q(title__icontains=query) |
+            Q(author__last_name__icontains=query) |
+            Q(author__first_name__icontains=query)
         )
 
     if work_type:
         works = works.filter(work_type=work_type)
 
     if year_from:
-        works = works.filter(publication_year__gte=year_from)
+        try:
+            works = works.filter(publication_year__gte=int(year_from))
+        except ValueError:
+            # Игнорируем, если введено не число
+            pass
 
     if year_to:
-        works = works.filter(publication_year__lte=year_to)
+        try:
+            works = works.filter(publication_year__lte=int(year_to))
+        except ValueError:
+            # Игнорируем, если введено не число
+            pass
 
     context = {
         'works': works,
