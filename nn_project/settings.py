@@ -116,3 +116,12 @@ LOGGING = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Разрешаем запросы с вашего домена по HTTPS
+CSRF_TRUSTED_ORIGINS = [
+    'https://arseniyqwe777-my-django-project-d6f4.twc1.net',
+    'http://arseniyqwe777-my-django-project-d6f4.twc1.net',  # на всякий случай
+]
+
+# Рекомендуемые настройки для безопасности
+CSRF_COOKIE_SECURE = True      # передавать CSRF-токен только по HTTPS
+SESSION_COOKIE_SECURE = True   # передавать сессию только по HTTPS
