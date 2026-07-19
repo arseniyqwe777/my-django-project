@@ -62,7 +62,7 @@ WSGI_APPLICATION = 'nn_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Friendly Dunnock',
+        'NAME': 'default_db',
         'USER': 'gen_user',
         'PASSWORD': '1ar7s2en70SENYA@#',
         'HOST': '104.171.139.74',
