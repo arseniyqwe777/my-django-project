@@ -5,53 +5,37 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header bg-white">
-                <h3 class="mb-0">
-                    <i class="fas fa-plus-circle"></i> {{ title }}
-                </h3>
+                <h3 class="mb-0"><i class="fas fa-plus-circle"></i> {{ title }}</h3>
             </div>
             <div class="card-body">
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-
                     <div class="mb-3">
-                        <label for="{{ form.title.id_for_label }}" class="form-label">
-                            Название книги <span class="text-danger">*</span>
-                        </label>
+                        <label for="{{ form.title.id_for_label }}" class="form-label">Название книги <span class="text-danger">*</span></label>
                         {{ form.title }}
                     </div>
-
                     <div class="mb-3">
-                        <label for="{{ form.inventory_number.id_for_label }}" class="form-label">
-                            Инвентарный номер <span class="text-danger">*</span>
-                        </label>
+                        <label for="{{ form.inventory_number.id_for_label }}" class="form-label">Инвентарный номер <span class="text-danger">*</span></label>
                         {{ form.inventory_number }}
                         <small class="form-text text-muted">Пятизначный номер (только цифры, например: 00001, 12345)</small>
                         {% if form.inventory_number.errors %}
                         <div class="alert alert-danger mt-1">{{ form.inventory_number.errors }}</div>
                         {% endif %}
                     </div>
-
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.publisher.id_for_label }}" class="form-label">
-                                Издательство
-                            </label>
+                            <label for="{{ form.publisher.id_for_label }}" class="form-label">Издательство</label>
                             {{ form.publisher }}
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="{{ form.publication_year.id_for_label }}" class="form-label">
-                                Год издания
-                            </label>
+                            <label for="{{ form.publication_year.id_for_label }}" class="form-label">Год издания</label>
                             {{ form.publication_year }}
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="{{ form.pages.id_for_label }}" class="form-label">
-                                Количество страниц
-                            </label>
+                            <label for="{{ form.pages.id_for_label }}" class="form-label">Количество страниц</label>
                             {{ form.pages }}
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label">Авторы книги</label>
                         <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
@@ -70,29 +54,18 @@
                             {% endfor %}
                         </div>
                     </div>
-
                     <div class="mb-3">
-                        <label for="{{ form.description.id_for_label }}" class="form-label">
-                            Описание книги
-                        </label>
+                        <label for="{{ form.description.id_for_label }}" class="form-label">Описание книги</label>
                         {{ form.description }}
                     </div>
-
                     <div class="mb-3">
-                        <label for="{{ form.cover_image.id_for_label }}" class="form-label">
-                            Обложка
-                        </label>
+                        <label for="{{ form.cover_image.id_for_label }}" class="form-label">Обложка</label>
                         {{ form.cover_image }}
                     </div>
-
                     <hr>
                     <div class="d-flex justify-content-between">
-                        <a href="{% url 'main' %}" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> Отмена
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Сохранить книгу
-                        </button>
+                        <a href="{% url 'main' %}" class="btn btn-secondary"><i class="fas fa-times"></i> Отмена</a>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Сохранить книгу</button>
                     </div>
                 </form>
             </div>

@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Поисковая форма - ОТКРЫТАЯ КНИГА -->
 <div class="search-container">
     <div class="text-center mb-4">
         <i class="fas fa-feather-alt fa-3x" style="color: var(--book-gold);"></i>
-        <h2 class="text-white mt-2">Откройте мир русской литературы</h2>
+        <h2 class="text-white mt-2">Откройте мир литературы</h2>
         <p class="text-white-50">Более {{ stats.works_count }} произведений в вашем распоряжении</p>
     </div>
     <form method="GET" action="{% url 'main' %}">
@@ -22,15 +21,9 @@
             </div>
             <div class="col-md-3">
                 <select name="type" class="form-select form-select-lg">
-                    <option value="works" {% if search_type == 'works' %}selected{% endif %}>
-                        📖 Произведения
-                    </option>
-                    <option value="books" {% if search_type == 'books' %}selected{% endif %}>
-                        📚 Книги
-                    </option>
-                    <option value="authors" {% if search_type == 'authors' %}selected{% endif %}>
-                        ✍️ Авторы
-                    </option>
+                    <option value="works" {% if search_type == 'works' %}selected{% endif %}>📖 Произведения</option>
+                    <option value="books" {% if search_type == 'books' %}selected{% endif %}>📚 Книги</option>
+                    <option value="authors" {% if search_type == 'authors' %}selected{% endif %}>✍️ Авторы</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -42,7 +35,6 @@
     </form>
 </div>
 
-<!-- Статистика -->
 <div class="row mb-5">
     <div class="col-md-4 mb-3">
         <div class="stats-card text-center">
@@ -67,12 +59,9 @@
     </div>
 </div>
 
-<!-- Результаты поиска -->
 {% if query %}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="gradient-text">
-            <i class="fas fa-search"></i> Результаты поиска
-        </h3>
+        <h3 class="gradient-text"><i class="fas fa-search"></i> Результаты поиска</h3>
         <span class="badge bg-primary rounded-pill">{{ results_count }} найдено</span>
     </div>
     <hr>
@@ -85,9 +74,7 @@
                     <div class="card work-card h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
-                                <h5 class="card-title text-primary">
-                                    <i class="fas fa-quote-left"></i> {{ work.title }}
-                                </h5>
+                                <h5 class="card-title text-primary"><i class="fas fa-quote-left"></i> {{ work.title }}</h5>
                                 <span class="badge bg-info rounded-pill">{{ work.get_work_type_display }}</span>
                             </div>
                             <h6 class="card-subtitle mb-3 text-muted">
@@ -100,9 +87,7 @@
                                 </a>
                             </p>
                             {% if work.page_range %}
-                            <p class="card-text">
-                                <i class="fas fa-file-alt"></i> <strong>Страницы:</strong> {{ work.page_range }}
-                            </p>
+                            <p class="card-text"><i class="fas fa-file-alt"></i> <strong>Страницы:</strong> {{ work.page_range }}</p>
                             {% endif %}
                             {% if work.description %}
                             <p class="card-text text-muted small">{{ work.description|truncatewords:25 }}</p>
@@ -168,9 +153,7 @@
                         <div class="card-body">
                             <i class="fas fa-user-circle fa-4x mb-3" style="color: var(--book-gold);"></i>
                             <h5 class="card-title">{{ author.full_name }}</h5>
-                            <p class="card-text small text-muted">
-                                {{ author.years_lived }}
-                            </p>
+                            <p class="card-text small text-muted">{{ author.years_lived }}</p>
                             <a href="{% url 'author_detail' author.id %}" class="btn btn-sm btn-outline-primary rounded-pill">
                                 <i class="fas fa-info-circle"></i> Профиль
                             </a>
@@ -185,14 +168,11 @@
     {% endif %}
 
 {% else %}
-    <!-- Последние добавленные книги -->
     <div class="row">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-transparent border-0">
-                    <h5 class="mb-0 gradient-text">
-                        <i class="fas fa-clock"></i> Последние поступления
-                    </h5>
+                    <h5 class="mb-0 gradient-text"><i class="fas fa-clock"></i> Последние поступления</h5>
                 </div>
                 <div class="list-group list-group-flush">
                     {% for book in recent_books %}
@@ -204,9 +184,7 @@
                             </div>
                             <small class="text-muted">Инв. № {{ book.inventory_number }}</small>
                         </div>
-                        <p class="mb-1 small text-muted mt-2">
-                            {{ book.get_authors_list|default:"Авторы не указаны" }}
-                        </p>
+                        <p class="mb-1 small text-muted mt-2">{{ book.get_authors_list|default:"Авторы не указаны" }}</p>
                     </a>
                     {% empty %}
                     <div class="list-group-item text-center py-5">
@@ -225,27 +203,24 @@
         </div>
 
         <div class="col-md-4">
-    <div class="card bg-gradient text-white" style="background: linear-gradient(135deg, var(--book-dark), var(--leather));">
-        <div class="card-body text-center">
-            <i class="fas fa-lightbulb fa-3x mb-3" style="color: var(--book-gold);"></i>
-            <h5 class="card-title">Как использовать систему?</h5>
-            <ol class="text-start mt-3" style="padding-left: 1.2rem; color: #2C1810; font-weight: 500;">
-                <li class="mb-2">Зарегистрируйтесь или войдите</li>
-                <li class="mb-2">Добавьте книги-сборники</li>
-                <li class="mb-2">Добавьте авторов</li>
-                <li class="mb-2">Внесите список произведений</li>
-                <li class="mb-2">Используйте поиск</li>
-            </ol>
-            {% if not user.is_authenticated %}
-            <a href="{% url 'signup' %}" class="btn btn-light rounded-pill mt-3">
-                <i class="fas fa-user-plus"></i> Регистрация
-            </a>
-            {% endif %}
-        </div>
-    </div>
-</div>
-
-            <!-- Цитата дня -->
+            <div class="card bg-gradient text-white" style="background: linear-gradient(135deg, var(--book-dark), var(--leather));">
+                <div class="card-body text-center">
+                    <i class="fas fa-lightbulb fa-3x mb-3" style="color: var(--book-gold);"></i>
+                    <h5 class="card-title">Как использовать систему?</h5>
+                    <ol class="text-start mt-3" style="padding-left: 1.2rem; color: #2C1810; font-weight: 500;">
+                        <li class="mb-2">Зарегистрируйтесь или войдите</li>
+                        <li class="mb-2">Добавьте книги-сборники</li>
+                        <li class="mb-2">Добавьте авторов</li>
+                        <li class="mb-2">Внесите список произведений</li>
+                        <li class="mb-2">Используйте поиск</li>
+                    </ol>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'signup' %}" class="btn btn-light rounded-pill mt-3">
+                        <i class="fas fa-user-plus"></i> Регистрация
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
             <div class="card mt-3">
                 <div class="card-body text-center">
                     <i class="fas fa-quote-left fa-2x mb-2" style="color: var(--book-gold);"></i>

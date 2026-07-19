@@ -5,88 +5,58 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header bg-white">
-                <h3 class="mb-0">
-                    <i class="fas fa-file-alt"></i> {{ title }}
-                </h3>
+                <h3 class="mb-0"><i class="fas fa-file-alt"></i> {{ title }}</h3>
             </div>
             <div class="card-body">
                 <form method="POST">
                     {% csrf_token %}
-
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i>
                         Добавление произведения в сборник: <strong>{{ book.title }}</strong>
                     </div>
-
                     <div class="mb-3">
-                        <label for="{{ form.title.id_for_label }}" class="form-label">
-                            Название произведения <span class="text-danger">*</span>
-                        </label>
+                        <label for="{{ form.title.id_for_label }}" class="form-label">Название произведения <span class="text-danger">*</span></label>
                         {{ form.title }}
                     </div>
-
                     <div class="mb-3">
-                        <label for="{{ form.original_title.id_for_label }}" class="form-label">
-                            Оригинальное название
-                        </label>
+                        <label for="{{ form.original_title.id_for_label }}" class="form-label">Оригинальное название</label>
                         {{ form.original_title }}
                     </div>
-
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.author.id_for_label }}" class="form-label">
-                                Автор произведения <span class="text-danger">*</span>
-                            </label>
+                            <label for="{{ form.author.id_for_label }}" class="form-label">Автор произведения <span class="text-danger">*</span></label>
                             {{ form.author }}
                             <small class="form-text text-muted">
                                 Нет нужного автора? <a href="{% url 'add_author' %}">Добавьте автора</a>
                             </small>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.work_type.id_for_label }}" class="form-label">
-                                Тип произведения <span class="text-danger">*</span>
-                            </label>
+                            <label for="{{ form.work_type.id_for_label }}" class="form-label">Тип произведения <span class="text-danger">*</span></label>
                             {{ form.work_type }}
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.first_page.id_for_label }}" class="form-label">
-                                Страница начала
-                            </label>
+                            <label for="{{ form.first_page.id_for_label }}" class="form-label">Страница начала</label>
                             {{ form.first_page }}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.last_page.id_for_label }}" class="form-label">
-                                Страница конца
-                            </label>
+                            <label for="{{ form.last_page.id_for_label }}" class="form-label">Страница конца</label>
                             {{ form.last_page }}
                         </div>
                     </div>
-
                     <div class="mb-3">
-                        <label for="{{ form.publication_year.id_for_label }}" class="form-label">
-                            Год первой публикации
-                        </label>
+                        <label for="{{ form.publication_year.id_for_label }}" class="form-label">Год первой публикации</label>
                         {{ form.publication_year }}
                     </div>
-
                     <div class="mb-3">
-                        <label for="{{ form.description.id_for_label }}" class="form-label">
-                            Краткое содержание
-                        </label>
+                        <label for="{{ form.description.id_for_label }}" class="form-label">Краткое содержание</label>
                         {{ form.description }}
                     </div>
-
                     <hr>
                     <div class="d-flex justify-content-between">
-                        <a href="{% url 'book_detail' book.id %}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Назад к книге
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Добавить произведение
-                        </button>
+                        <a href="{% url 'book_detail' book.id %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Назад к книге</a>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Добавить произведение</button>
                     </div>
                 </form>
             </div>

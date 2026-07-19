@@ -14,9 +14,7 @@
         <div class="card mb-4">
             <div class="card-header bg-white">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2 class="mb-0">
-                        <i class="fas fa-book"></i> {{ book.title }}
-                    </h2>
+                    <h2 class="mb-0"><i class="fas fa-book"></i> {{ book.title }}</h2>
                     {% if user.is_authenticated %}
                     <div class="btn-group">
                         <a href="{% url 'edit_book' book.id %}" class="btn btn-sm btn-outline-primary">
@@ -50,28 +48,10 @@
                         {% endif %}
 
                         <table class="table table-sm table-borderless">
-                            <tr>
-                                <td width="150"><strong>Инвентарный номер:</strong></td>
-                                <td><code class="bg-light p-1">{{ book.inventory_number }}</code></td>
-                            </tr>
-                            {% if book.publisher %}
-                            <tr>
-                                <td><strong>Издательство:</strong></td>
-                                <td>{{ book.publisher }}</td>
-                            </tr>
-                            {% endif %}
-                            {% if book.publication_year %}
-                            <tr>
-                                <td><strong>Год издания:</strong></td>
-                                <td>{{ book.publication_year }}</td>
-                            </tr>
-                            {% endif %}
-                            {% if book.pages %}
-                            <tr>
-                                <td><strong>Страниц:</strong></td>
-                                <td>{{ book.pages }}</td>
-                            </tr>
-                            {% endif %}
+                            <tr><td width="150"><strong>Инвентарный номер:</strong></td><td><code class="bg-light p-1">{{ book.inventory_number }}</code></td></tr>
+                            {% if book.publisher %}<tr><td><strong>Издательство:</strong></td><td>{{ book.publisher }}</td></tr>{% endif %}
+                            {% if book.publication_year %}<tr><td><strong>Год издания:</strong></td><td>{{ book.publication_year }}</td></tr>{% endif %}
+                            {% if book.pages %}<tr><td><strong>Страниц:</strong></td><td>{{ book.pages }}</td></tr>{% endif %}
                         </table>
 
                         {% if book.description %}
@@ -126,9 +106,7 @@
                             <tr>
                                 <td>
                                     <i class="fas fa-user"></i>
-                                    <a href="{% url 'author_detail' work.author.id %}">
-                                        {{ work.author.full_name }}
-                                    </a>
+                                    <a href="{% url 'author_detail' work.author.id %}">{{ work.author.full_name }}</a>
                                 </td>
                                 <td>
                                     <strong>{{ work.title }}</strong>
@@ -136,16 +114,10 @@
                                     <br><small class="text-muted">{{ work.original_title }}</small>
                                     {% endif %}
                                     {% if work.description %}
-                                    <br><small class="text-muted">
-                                        <i class="fas fa-info-circle"></i> {{ work.description|truncatewords:15 }}
-                                    </small>
+                                    <br><small class="text-muted"><i class="fas fa-info-circle"></i> {{ work.description|truncatewords:15 }}</small>
                                     {% endif %}
                                 </td>
-                                <td>
-                                    <span class="badge bg-info">
-                                        {{ work.get_work_type_display }}
-                                    </span>
-                                </td>
+                                <td><span class="badge bg-info">{{ work.get_work_type_display }}</span></td>
                                 <td>
                                     {% if work.first_page %}
                                         <i class="fas fa-file"></i>
@@ -161,16 +133,8 @@
                                 {% if user.is_authenticated %}
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{% url 'edit_work' work.id %}"
-                                           class="btn btn-outline-primary"
-                                           title="Редактировать">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="{% url 'delete_work' work.id %}"
-                                           class="btn btn-outline-danger"
-                                           title="Удалить">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                        <a href="{% url 'edit_work' work.id %}" class="btn btn-outline-primary" title="Редактировать"><i class="fas fa-edit"></i></a>
+                                        <a href="{% url 'delete_work' work.id %}" class="btn btn-outline-danger" title="Удалить"><i class="fas fa-trash"></i></a>
                                     </div>
                                 </td>
                                 {% endif %}

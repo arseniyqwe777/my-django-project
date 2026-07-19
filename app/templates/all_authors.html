@@ -22,9 +22,7 @@
                     <div class="card-body text-center">
                         <i class="fas fa-user-circle fa-4x mb-2 text-primary"></i>
                         <h5 class="card-title">{{ author.full_name }}</h5>
-                        <p class="card-text small">
-                            {{ author.years_lived }}
-                        </p>
+                        <p class="card-text small">{{ author.years_lived }}</p>
                         <p class="card-text small text-muted">
                             <i class="fas fa-book"></i> Книг: {{ author.books.count }}<br>
                             <i class="fas fa-file-alt"></i> Произведений: {{ author.works.count }}
@@ -63,27 +61,15 @@
         <nav aria-label="Page navigation" class="mt-4">
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page=1">&laquo; Первая</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
-                </li>
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; Первая</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a></li>
                 {% endif %}
-
                 <li class="page-item active">
-                    <span class="page-link">
-                        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
-                    </span>
+                    <span class="page-link">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
                 </li>
-
                 {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
-                </li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a></li>
                 {% endif %}
             </ul>
         </nav>
