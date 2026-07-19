@@ -1,207 +1,127 @@
-```markdown
-# 📚 BookBridge — Книжный мост
+# 📚 BookBridge
 
-**BookBridge** — это веб-приложение для каталогизации и поиска книг, авторов и произведений. Проект создан как портфолио для Junior Python/Django-разработчика.
+> Современная библиотечная система на Django с поиском, авторизацией и админ-панелью.
 
-🔗 **Сайт:** [https://arseniyqwe777-my-django-project-d6f4.twc1.net](https://arseniyqwe777-my-django-project-d6f4.twc1.net)
+[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-5.1-green?logo=django)](https://www.djangoproject.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue?logo=postgresql)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-✓-blue?logo=docker)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
----
-
-## 📖 О проекте
-
-Библиотечная система, которая позволяет:
-- Добавлять, редактировать и удалять **книги**, **авторов** и **произведения**
-- Искать книги и авторов по названию и инвентарному номеру
-- Использовать **расширенный поиск** с фильтрацией по типу произведения и году публикации
-- Управлять контентом через удобную **админ-панель Django**
-
-Проект создан в рамках обучения по специальности **09.02.07 «Информационные системы и программирование»** и демонстрирует навыки веб-разработки на Django.
+🔗 **Живой демо-сайт:** [bookbridge.ru](https://arseniyqwe777-my-django-project-d6f4.twc1.net)
 
 ---
 
-## 🛠️ Технологии
+## О проекте
+
+**BookBridge** — это веб-приложение для каталогизации книг, авторов и произведений. Проект создан как портфолио для Junior Python-разработчика и демонстрирует навыки работы с Django, PostgreSQL, Docker и деплоем в облаке.
+
+### Возможности
+
+- 🔐 **Авторизация** — регистрация, вход, выход
+- 📚 **Crud** — создание, чтение, обновление, удаление книг, авторов, произведений
+- 🔍 **Поиск** — по названию, автору, инвентарному номеру
+- 🧩 **Расширенный поиск** — фильтрация по типу произведения и году публикации
+- 🖼️ **Обложки** — загрузка изображений для книг
+- 👑 **Админ-панель** — управление контентом
+- ⭐ **Избранное** — добавление книг в избранное
+- 📤 **Экспорт** — выгрузка данных в csv
+
+---
+
+## Технологический стек
 
 | Компонент | Технология |
 |-----------|------------|
 | **Язык** | Python 3.11 |
 | **Фреймворк** | Django 5.1 |
-| **База данных** | PostgreSQL (в продакшене), SQLite (для разработки) |
+| **База данных** | PostgreSQL 16 |
 | **Сервер** | Gunicorn |
 | **Статика** | Whitenoise |
 | **Контейнеризация** | Docker |
-| **Вёрстка** | HTML5, CSS3, Bootstrap 5 |
+| **Фронтенд** | Bootstrap 5, Html5, Css3 |
 | **Деплой** | Timeweb Cloud |
 | **Версионирование** | Git, GitHub |
 
 ---
 
-## 🚀 Функциональные возможности
+## Быстрый старт
 
-- 🔐 **Авторизация:** регистрация, вход, выход
-- 📚 **CRUD-операции** для книг, авторов, произведений
-- 🔍 **Поиск** по названию, автору, инвентарному номеру
-- 🧩 **Расширенный поиск** с фильтрацией по типу и году
-- 🖼️ **Обложки книг** (загрузка изображений)
-- 👑 **Админ-панель** для управления контентом
-- 📊 **Статистика** на главной странице
-- ⭐ **Избранное** и рейтинг книг (дополнительный функционал)
-- 📤 **Экспорт данных** в CSV
+```bash
+# Клонировать репозиторий
+git clone https://github.com/arseniyqwe777/my-django-project.git
+cd my-django-project
 
----
+# Создать виртуальное окружение
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
-## 📸 Скриншоты
+# Установить зависимости
+pip install -r requirements.txt
 
-### Главная страница
-![Главная страница](screenshots/screenshot-main.png)
+# Применить миграции
+python manage.py migrate
 
-### Поиск
-![Поиск](screenshots/screenshot-search.png)
+# Создать суперпользователя
+python manage.py createsuperuser
 
-### Страница книги
-![Страница книги](screenshots/screenshot-book.png)
-
-### Страница автора
-![Страница автора](screenshots/screenshot-author.png)
-
-### Админ-панель
-![Админ-панель](screenshots/screenshot-admin.png)
+# Запустить сервер
+python manage.py runserver
+```
 
 ---
 
-## 🏗️ Архитектура проекта
+## Скриншоты
+
+<div align="center">
+  <img src="screenshots/screenshot-main.png" width="45%" alt="Главная страница">
+  <img src="screenshots/screenshot-search.png" width="45%" alt="Поиск">
+</div>
+
+<div align="center">
+  <img src="screenshots/screenshot-book.png" width="45%" alt="Страница книги">
+  <img src="screenshots/screenshot-author.png" width="45%" alt="Страница автора">
+</div>
+
+---
+
+## Структура проекта
 
 ```
 nn_project/
 ├── app/                    # Основное приложение
-│   ├── migrations/         # Миграции базы данных
-│   ├── static/             # CSS, JS, изображения
-│   ├── templates/          # HTML-шаблоны
 │   ├── models.py           # Модели данных
 │   ├── views.py            # Контроллеры
 │   ├── urls.py             # Маршруты
 │   ├── forms.py            # Формы
-│   ├── admin.py            # Настройки админки
-│   └── utils.py            # Вспомогательные функции
+│   └── admin.py            # Настройки админки
 ├── nn_project/             # Настройки проекта
-│   ├── settings.py         # Конфигурация Django
-│   ├── urls.py             # Главные маршруты
-│   └── wsgi.py             # WSGI-точка входа
-├── screenshots/            # Скриншоты для README
+├── screenshots/            # Скриншоты для readme
 ├── staticfiles/            # Собранная статика
-├── media/                  # Загруженные пользователем файлы
-├── Dockerfile              # Инструкция для сборки Docker-образа
-├── requirements.txt        # Зависимости Python
-└── manage.py               # Управляющий скрипт Django
+├── Dockerfile              # Docker-сборка
+├── requirements.txt        # Зависимости
+└── manage.py               # Управляющий скрипт
 ```
 
 ---
 
-## 🔧 Установка и запуск
+## Что дальше?
 
-### Локальная разработка
-
-1. **Клонируй репозиторий:**
-   ```bash
-   git clone https://github.com/arseniyqwe777/my-django-project.git
-   cd my-django-project
-   ```
-
-2. **Создай и активируй виртуальное окружение:**
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate  # для Windows: .venv\Scripts\activate
-   ```
-
-3. **Установи зависимости:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Примени миграции:**
-   ```bash
-   python manage.py migrate
-   ```
-
-5. **Создай суперпользователя:**
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-6. **Собери статику:**
-   ```bash
-   python manage.py collectstatic --noinput
-   ```
-
-7. **Запусти сервер:**
-   ```bash
-   python manage.py runserver
-   ```
-
-8. **Открой сайт в браузере:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- [ ] Rest Api (Django Rest Framework)
+- [ ] Автотесты
+- [ ] Кэширование (Redis)
+- [ ] Telegram-бот
 
 ---
 
-### Запуск через Docker
-
-```bash
-docker build -t bookbridge .
-docker run -p 8000:8000 bookbridge
-```
-
----
-
-## 🔗 API и экспорт
-
-- **CSV-экспорт книг:** `/export/books/`
-- **CSV-экспорт авторов:** `/export/authors/`
-- **CSV-экспорт произведений:** `/export/works/`
-
----
-
-## 🧪 Технические детали
-
-### Модели данных
-
-| Модель | Описание |
-|--------|----------|
-| `Author` | Автор: имя, фамилия, годы жизни, биография |
-| `Book` | Книга: название, инвентарный номер, издательство, год, страницы, обложка |
-| `BookAuthor` | Связь книга-автор с ролью (автор, составитель, редактор) |
-| `Work` | Произведение: название, автор, тип, страницы в книге, год публикации |
-| `UserBook` | Избранное пользователя: книга, рейтинг, рецензия |
-
-### Безопасность
-
-- **CSRF-защита** включена
-- **HTTPS/SSL** настроен (Let's Encrypt)
-- **CSRF_COOKIE_SECURE** и **SESSION_COOKIE_SECURE** включены
-
----
-
-## 📈 Планы по развитию
-
-- [ ] REST API на Django REST Framework
-- [ ] Автотесты (unittest/pytest)
-- [ ] Кэширование страниц (Redis)
-- [ ] Telegram-бот для поиска книг
-- [ ] Возможность добавлять книги в избранное без регистрации
-
----
-
-## 📝 Лицензия
-
-Это учебный проект. Все права защищены. Создано для портфолио.
-
----
-
-## 👤 Автор
+## Автор
 
 **Арсений**  
-- **Специальность:** 09.02.07 Информационные системы и программирование  
-- **Сайт:** [https://arseniyqwe777-my-django-project-d6f4.twc1.net](https://arseniyqwe777-my-django-project-d6f4.twc1.net)  
-- **GitHub:** [arseniyqwe777](https://github.com/arseniyqwe777)  
+Студент специальности 09.02.07 «Информационные системы и программирование»
+
+[![GitHub](https://img.shields.io/badge/GitHub-arseniyqwe777-181717?logo=github)](https://github.com/arseniyqwe777)
+[![Telegram](https://img.shields.io/badge/Telegram-@arseniy-26A5E4?logo=telegram)](https://t.me/arseniy)
 
 ---
 
-⭐ Если этот проект помог вам, поставьте звёздочку на GitHub! ⭐
-```
+⭐ **Если проект был полезен, поставьте звёздочку на GitHub!**
