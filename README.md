@@ -1,35 +1,53 @@
-# 📚 BookBridge
+# 📚 BookBridge — Библиотечная система управления
 
-> Современная библиотечная система на Django с поиском, авторизацией и админ-панелью.
+[![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-5.1-green.svg)](https://www.djangoproject.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
 
-[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://www.python.org/)
-[![Django](https://img.shields.io/badge/Django-5.1-green?logo=django)](https://www.djangoproject.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue?logo=postgresql)](https://www.postgresql.org/)
-[![Docker](https://img.shields.io/badge/Docker-✓-blue?logo=docker)](https://www.docker.com/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+**BookBridge** — это веб-приложение для управления библиотечным фондом. Проект разработан как комплексное решение для каталогизации книг, авторов и произведений с возможностью поиска и администрирования.
 
-🔗 **Живой демо-сайт:** [bookbridge.ru](https://arseniyqwe777-my-django-project-d6f4.twc1.net)
-
----
-
-## О проекте
-
-**BookBridge** — это веб-приложение для каталогизации книг, авторов и произведений. Проект создан как портфолио для Junior Python-разработчика и демонстрирует навыки работы с Django, PostgreSQL, Docker и деплоем в облаке.
-
-### Возможности
-
-- 🔐 **Авторизация** — регистрация, вход, выход
-- 📚 **Crud** — создание, чтение, обновление, удаление книг, авторов, произведений
-- 🔍 **Поиск** — по названию, автору, инвентарному номеру
-- 🧩 **Расширенный поиск** — фильтрация по типу произведения и году публикации
-- 🖼️ **Обложки** — загрузка изображений для книг
-- 👑 **Админ-панель** — управление контентом
-- ⭐ **Избранное** — добавление книг в избранное
-- 📤 **Экспорт** — выгрузка данных в csv
+🔗 **Демо-версия**: [bookbridge.ru](https://arseniyqwe777-my-django-project-d6f4.twc1.net)
 
 ---
 
-## Технологический стек
+## 📋 О проекте
+
+### Задача
+Создать удобный инструмент для библиотекарей и читателей, позволяющий:
+- Вести учёт книг, авторов и произведений
+- Быстро находить нужную книгу по различным параметрам
+- Управлять данными через понятный интерфейс
+
+### Решение
+Разработано полнофункциональное веб-приложение с:
+- Системой авторизации и разграничения прав
+- Удобным CRUD-интерфейсом для управления контентом
+- Расширенным поиском с фильтрацией
+- Административной панелью для управления системой
+
+### Результат
+Готовое к использованию приложение, которое демонстрирует навыки разработки на Django, работу с PostgreSQL, контейнеризацию и деплой. Подходит для использования в небольших библиотеках или как основа для более крупных систем.
+
+---
+
+## ⚙️ Основной функционал
+
+| Функция | Описание |
+|---------|----------|
+| 🔐 **Авторизация** | Регистрация, вход, восстановление пароля |
+| 📚 **Управление книгами** | Добавление, редактирование, удаление книг с обложками |
+| 👤 **Управление авторами** | Каталог авторов с биографиями |
+| 📖 **Управление произведениями** | Привязка произведений к книгам и авторам |
+| 🔍 **Поиск** | По названию, автору, инвентарному номеру |
+| 🧩 **Расширенный поиск** | Фильтрация по типу произведения и году публикации |
+| ⭐ **Избранное** | Добавление книг в личный список избранного |
+| 📤 **Экспорт данных** | Выгрузка каталога в CSV-формат |
+| 👑 **Админ-панель** | Полное управление контентом через Django Admin |
+
+---
+
+## 🛠️ Технологический стек
 
 | Компонент | Технология |
 |-----------|------------|
@@ -39,13 +57,15 @@
 | **Сервер** | Gunicorn |
 | **Статика** | Whitenoise |
 | **Контейнеризация** | Docker |
-| **Фронтенд** | Bootstrap 5, Html5, Css3 |
+| **Фронтенд** | Bootstrap 5, HTML5, CSS3 |
 | **Деплой** | Timeweb Cloud |
 | **Версионирование** | Git, GitHub |
 
 ---
 
-## Быстрый старт
+## 🚀 Быстрый старт
+
+### Клонирование и настройка
 
 ```bash
 # Клонировать репозиторий
@@ -58,34 +78,43 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
 # Установить зависимости
 pip install -r requirements.txt
+```
 
+### Переменные окружения
+
+Создайте файл `.env` в корне проекта:
+```
+SECRET_KEY=your_secret_key_here
+DATABASE_URL=postgresql://user:password@localhost/dbname
+DEBUG=True
+```
+
+### Миграции и запуск
+
+```bash
 # Применить миграции
 python manage.py migrate
 
 # Создать суперпользователя
 python manage.py createsuperuser
 
-# Запустить сервер
+# Запустить сервер разработки
 python manage.py runserver
+```
+
+### Запуск через Docker
+
+```bash
+# Собрать образ
+docker build -t bookbridge .
+
+# Запустить контейнер
+docker run -p 8000:8000 bookbridge
 ```
 
 ---
 
-## Скриншоты
-
-<div align="center">
-  <img src="screenshots/screenshot-main.png" width="45%" alt="Главная страница">
-  <img src="screenshots/screenshot-search.png" width="45%" alt="Поиск">
-</div>
-
-<div align="center">
-  <img src="screenshots/screenshot-book.png" width="45%" alt="Страница книги">
-  <img src="screenshots/screenshot-author.png" width="45%" alt="Страница автора">
-</div>
-
----
-
-## Структура проекта
+## 📁 Структура проекта
 
 ```
 nn_project/
@@ -94,9 +123,10 @@ nn_project/
 │   ├── views.py            # Контроллеры
 │   ├── urls.py             # Маршруты
 │   ├── forms.py            # Формы
-│   └── admin.py            # Настройки админки
+│   └── admin.py            # Настройка административной панели
 ├── nn_project/             # Настройки проекта
-├── screenshots/            # Скриншоты для readme
+│   ├── settings.py         # Основные настройки
+│   └── urls.py             # Главные маршруты
 ├── staticfiles/            # Собранная статика
 ├── Dockerfile              # Docker-сборка
 ├── requirements.txt        # Зависимости
@@ -105,22 +135,21 @@ nn_project/
 
 ---
 
-## Что дальше?
+## 🔮 Планы по развитию
 
-- [ ] Rest Api (Django Rest Framework)
-- [ ] Автотесты
-- [ ] Кэширование (Redis)
-- [ ] Telegram-бот
+- [ ] REST API на Django REST Framework
+- [ ] Автотесты для критических функций
+- [ ] Кэширование запросов через Redis
+- [ ] Интеграция с Telegram-ботом для уведомлений
+- [ ] Расширенная статистика использования
 
 ---
 
-## Автор
+## 📞 Контакты
 
 **Арсений**  
-Студент специальности 09.02.07 «Информационные системы и программирование»
-
-[![GitHub](https://img.shields.io/badge/GitHub-arseniyqwe777-181717?logo=github)](https://github.com/arseniyqwe777)
-[![Telegram](https://img.shields.io/badge/Telegram-@arseniyqwe777-26A5E4?logo=telegram)](https://t.me/arseniy)
+Студент специальности 09.02.07 «Информационные системы и программирование»  
+GitHub: [arseniyqwe777](https://github.com/arseniyqwe777)
 
 ---
 
