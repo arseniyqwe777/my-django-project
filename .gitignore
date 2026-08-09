@@ -18,4 +18,8 @@ __pycache__/
 
 # Логи и временные файлы
 *.log
-*.tmp
+*.tmp.env 
+__pycache__/ 
+*.pyc 
+staticfiles/ 
+db.sqlite3 
