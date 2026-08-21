@@ -7,15 +7,42 @@ env/
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 
-# База данных (если НЕ хотите загружать данные — но вы ХОТИТЕ, поэтому закомментируйте или удалите эту строку)
-# db.sqlite3
+# База данных
+*.sqlite3
+db.sqlite3
+*.db
 
 # Настройки IDE
 .vscode/
 .idea/
 *.iml
+*.swp
+*.swo
 
 # Логи и временные файлы
 *.log
 *.tmp
+*.pid
+*.seed
+
+# Переменные окружения (СЕКРЕТЫ!)
+.env
+.env.local
+.env.*.local
+
+# Файлы статики (собираются автоматически)
+staticfiles/
+media/
+
+# Отчеты тестов
+coverage/
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Файлы операционной системы
+.DS_Store
+Thumbs.db
+desktop.ini
