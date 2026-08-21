@@ -58,17 +58,20 @@ WSGI_APPLICATION = 'nn_project.wsgi.application'
 # ============================================
 # БАЗА ДАННЫХ (POSTGRESQL)
 # ============================================
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'NAME': os.environ.get('DB_NAME', 'nn'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'root'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+        'OPTIONS': {
+            'sslmode': 'disable',  # Для локальной разработки
+        }
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
