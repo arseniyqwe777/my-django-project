@@ -166,3 +166,21 @@ DEFAULT_FROM_EMAIL = 'noreply@bookbridge.ru'
 # EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = 'your-email@example.com'
 # EMAIL_HOST_PASSWORD = 'your-password'
+# ============================================
+# REDIS КЭШИРОВАНИЕ
+# ============================================
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PICKLE_VERSION': -1,
+        },
+        'KEY_PREFIX': 'bookbridge',
+    }
+}
+
+# Время жизни кэша (15 минут)
+CACHE_TTL = 60 * 15

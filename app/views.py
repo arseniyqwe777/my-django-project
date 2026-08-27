@@ -9,6 +9,7 @@ from django.db.models import Count, Q, Avg
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.cache import cache_page
 import csv
 import json
 
@@ -30,9 +31,10 @@ def get_stats():
 
 
 # ============================================
-# ОСНОВНЫЕ СТРАНИЦЫ
+# ОСНОВНЫЕ СТРАНИЦЫ (С КЭШИРОВАНИЕМ)
 # ============================================
 
+@cache_page(60 * 15)  # 15 минут
 def main(request):
     """Главная страница с поиском"""
     query = request.GET.get('q', '').strip()
@@ -68,6 +70,7 @@ def main(request):
     return render(request, 'main.html', context)
 
 
+@cache_page(60 * 15)  # 15 минут
 def all_books(request):
     """Список всех книг с пагинацией"""
     books_list = Book.objects.all().prefetch_related('authors')
@@ -77,6 +80,7 @@ def all_books(request):
     return render(request, 'all_books.html', {'page_obj': books})
 
 
+@cache_page(60 * 15)  # 15 минут
 def all_authors(request):
     """Список всех авторов с пагинацией"""
     authors_list = Author.objects.all()
@@ -86,6 +90,7 @@ def all_authors(request):
     return render(request, 'all_authors.html', {'page_obj': authors})
 
 
+@cache_page(60 * 15)  # 15 минут
 def book_detail(request, book_id):
     """Страница книги"""
     book = get_object_or_404(Book, id=book_id)
@@ -127,10 +132,8 @@ def advanced_search(request):
     year_from = request.GET.get('year_from', '')
     year_to = request.GET.get('year_to', '')
 
-    # Начинаем с пустого QuerySet для произведений
     works = Work.objects.select_related('author', 'book').all()
 
-    # Применяем фильтры, только если параметры не пустые
     if query:
         works = works.filter(
             Q(title__icontains=query) |
@@ -145,14 +148,12 @@ def advanced_search(request):
         try:
             works = works.filter(publication_year__gte=int(year_from))
         except ValueError:
-            # Игнорируем, если введено не число
             pass
 
     if year_to:
         try:
             works = works.filter(publication_year__lte=int(year_to))
         except ValueError:
-            # Игнорируем, если введено не число
             pass
 
     context = {
@@ -167,7 +168,6 @@ def advanced_search(request):
 
 def search_results(request):
     """Результаты расширенного поиска"""
-    # Аналогично advanced_search, но с другим шаблоном
     return advanced_search(request)
 
 
@@ -269,7 +269,7 @@ def add_work(request, book_id):
         form = WorkForm(request.POST)
         if form.is_valid():
             work = form.save(commit=False)
-            work.book = book  # КЛЮЧЕВАЯ СТРОКА!
+            work.book = book
             work.save()
             messages.success(request, f'Произведение "{work.title}" добавлено в сборник!')
             return redirect('book_detail', book_id=book.id)
@@ -326,7 +326,6 @@ def edit_book(request, book_id):
         if form.is_valid():
             book = form.save()
 
-            # Обновляем авторов
             book.authors.clear()
             author_ids = request.POST.getlist('authors')
             for author_id in author_ids:
@@ -455,8 +454,6 @@ def delete_work(request, work_id):
 # НОВЫЕ ФУНКЦИИ
 # ============================================
 
-# === АДМИН-ПАНЕЛЬ ===
-
 @login_required
 def admin_dashboard(request):
     """Административная панель"""
@@ -479,8 +476,6 @@ def admin_dashboard(request):
     }
     return render(request, 'admin_dashboard.html', context)
 
-
-# === ИЗБРАННОЕ ===
 
 @login_required
 def favorites_view(request):
@@ -512,8 +507,6 @@ def remove_from_favorites(request, book_id):
     messages.success(request, f'Книга "{book.title}" удалена из избранного.')
     return redirect('favorites')
 
-
-# === РЕЙТИНГ И РЕЦЕНЗИИ ===
 
 @login_required
 def rate_book(request, book_id):
@@ -630,7 +623,6 @@ def export_works_csv(request):
 
 def export_all_data(request):
     """Экспорт всех данных в ZIP"""
-    # Для простоты пока экспортируем только книги
     return export_books_csv(request)
 
 
