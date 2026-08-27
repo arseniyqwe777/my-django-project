@@ -176,7 +176,8 @@ DEFAULT_FROM_EMAIL = 'noreply@bookbridge.ru'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'LOCATION': 'redis://172.17.0.1:6379/1',
+
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'PICKLE_VERSION': -1,
