@@ -25,6 +25,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',  # ← В САМОЕ НАЧАЛО!
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -33,6 +34,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',  # ← В КОНЕЦ!
 ]
 
 ROOT_URLCONF = 'nn_project.urls'
@@ -166,6 +168,7 @@ DEFAULT_FROM_EMAIL = 'noreply@bookbridge.ru'
 # EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = 'your-email@example.com'
 # EMAIL_HOST_PASSWORD = 'your-password'
+
 # ============================================
 # REDIS КЭШИРОВАНИЕ
 # ============================================
@@ -182,5 +185,6 @@ CACHES = {
     }
 }
 
-# Время жизни кэша (15 минут)
-CACHE_TTL = 60 * 15
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 60 * 15  # 15 минут
+CACHE_MIDDLEWARE_KEY_PREFIX = 'bookbridge'
