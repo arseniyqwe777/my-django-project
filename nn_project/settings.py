@@ -25,7 +25,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.cache.UpdateCacheMiddleware',  # ← В САМОЕ НАЧАЛО!
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -34,7 +33,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',  # ← В КОНЕЦ!
 ]
 
 ROOT_URLCONF = 'nn_project.urls'
@@ -69,7 +67,7 @@ DATABASES = {
         'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '5432'),
         'OPTIONS': {
-            'sslmode': 'disable',  # Для локальной разработки
+            'sslmode': 'disable',
         }
     }
 }
@@ -162,30 +160,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 NOTIFICATION_EMAIL = 'your-email@example.com'
 DEFAULT_FROM_EMAIL = 'noreply@bookbridge.ru'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.yandex.ru'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@example.com'
-# EMAIL_HOST_PASSWORD = 'your-password'
-
 # ============================================
-# REDIS КЭШИРОВАНИЕ
+# КЭШИРОВАНИЕ
 # ============================================
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://172.17.0.1:6379/1',
-
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'PICKLE_VERSION': -1,
-        },
-        'KEY_PREFIX': 'bookbridge',
+if DEBUG:
+    # Локально — используем Redis
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': 'redis://127.0.0.1:6379/1',
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+                'PICKLE_VERSION': -1,
+            },
+            'KEY_PREFIX': 'bookbridge',
+        }
     }
-}
-
-CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 60 * 15  # 15 минут
-CACHE_MIDDLEWARE_KEY_PREFIX = 'bookbridge'
+else:
+    # На сервере — локальный кэш (без Redis)
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-snowflake',
+        }
+    }

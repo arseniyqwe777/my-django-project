@@ -9,7 +9,6 @@ from django.db.models import Count, Q, Avg
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.cache import cache_page
 import csv
 import json
 
@@ -31,10 +30,9 @@ def get_stats():
 
 
 # ============================================
-# ОСНОВНЫЕ СТРАНИЦЫ (С КЭШИРОВАНИЕМ)
+# ОСНОВНЫЕ СТРАНИЦЫ
 # ============================================
 
-@cache_page(60 * 15)  # 15 минут
 def main(request):
     """Главная страница с поиском"""
     query = request.GET.get('q', '').strip()
@@ -70,7 +68,6 @@ def main(request):
     return render(request, 'main.html', context)
 
 
-@cache_page(60 * 15)  # 15 минут
 def all_books(request):
     """Список всех книг с пагинацией"""
     books_list = Book.objects.all().prefetch_related('authors')
@@ -80,7 +77,6 @@ def all_books(request):
     return render(request, 'all_books.html', {'page_obj': books})
 
 
-@cache_page(60 * 15)  # 15 минут
 def all_authors(request):
     """Список всех авторов с пагинацией"""
     authors_list = Author.objects.all()
@@ -90,7 +86,6 @@ def all_authors(request):
     return render(request, 'all_authors.html', {'page_obj': authors})
 
 
-@cache_page(60 * 15)  # 15 минут
 def book_detail(request, book_id):
     """Страница книги"""
     book = get_object_or_404(Book, id=book_id)
