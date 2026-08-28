@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Author, Book, Work, BookAuthor
+from .models import Author, Book, Work, BookAuthor, BookStat  # ← Добавь BookStat!
 
 
 @admin.register(Author)
@@ -22,7 +22,7 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ['title', 'inventory_number', 'publisher', 'publication_year']
     search_fields = ['title', 'inventory_number', 'publisher']
     list_filter = ['publication_year']
-    inlines = [BookAuthorInline]  # Используем inline вместо filter_horizontal
+    inlines = [BookAuthorInline]
     fieldsets = (
         (None, {
             'fields': ('title', 'inventory_number', 'publisher', 'publication_year', 'pages', 'description',
@@ -41,7 +41,6 @@ class WorkAdmin(admin.ModelAdmin):
 
     def page_range(self, obj):
         return obj.page_range
-
     page_range.short_description = 'Диапазон страниц'
 
 
@@ -51,3 +50,11 @@ class BookAuthorAdmin(admin.ModelAdmin):
     list_filter = ['role']
     search_fields = ['book__title', 'author__last_name', 'author__first_name']
     autocomplete_fields = ['book', 'author']
+
+
+@admin.register(BookStat)  # ← Теперь BookStat импортирован!
+class BookStatAdmin(admin.ModelAdmin):
+    list_display = ['book', 'date', 'views', 'favorites']
+    list_filter = ['date']
+    search_fields = ['book__title']
+    ordering = ['-date']

@@ -34,10 +34,6 @@ urlpatterns = [
     path('delete-author/<int:author_id>/', views.delete_author, name='delete_author'),
     path('delete-work/<int:work_id>/', views.delete_work, name='delete_work'),
 
-    # ============================================
-    # НОВЫЕ МАРШРУТЫ
-    # ============================================
-
     # === АДМИН-ПАНЕЛЬ ===
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 
@@ -59,6 +55,10 @@ urlpatterns = [
     # === PWA ===
     path('sw.js/', views.service_worker, name='service_worker'),
     path('manifest.json/', views.manifest, name='manifest'),
+
+    # === АНАЛИТИКА ===
+    path('analytics/', views.analytics_dashboard, name='analytics'),
+    path('api/analytics/', views.analytics_data, name='analytics_data'),
 ]
 
 # Для отображения медиафайлов в разработке

@@ -46,6 +46,7 @@ class Book(models.Model):
     description = models.TextField('Описание', blank=True)
     cover_image = models.ImageField('Обложка', upload_to='covers/', blank=True, null=True)
     authors = models.ManyToManyField(Author, through='BookAuthor', related_name='books')
+    created_at = models.DateTimeField('Дата добавления', auto_now_add=True, null=True)
 
     class Meta:
         verbose_name = 'Книга'
@@ -128,10 +129,6 @@ class Work(models.Model):
         return ''
 
 
-# ============================================
-# НОВАЯ МОДЕЛЬ ДЛЯ ИЗБРАННОГО
-# ============================================
-
 class UserBook(models.Model):
     """Избранные книги и рейтинги пользователей"""
     user = models.ForeignKey(
@@ -166,3 +163,20 @@ class UserBook(models.Model):
 
     def __str__(self):
         return f'{self.user.username} -> {self.book.title}'
+
+
+class BookStat(models.Model):
+    """Статистика по книгам"""
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='stats')
+    date = models.DateField('Дата', auto_now_add=True)
+    views = models.IntegerField('Просмотры', default=0)
+    favorites = models.IntegerField('Добавления в избранное', default=0)
+
+    class Meta:
+        verbose_name = 'Статистика книги'
+        verbose_name_plural = 'Статистика книг'
+        ordering = ['-date']
+        unique_together = ('book', 'date')
+
+    def __str__(self):
+        return f'{self.book.title} - {self.date}'

@@ -5,14 +5,15 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
-from django.db.models import Count, Q, Avg
+from django.db.models import Count, Q, Avg, Sum
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import csv
 import json
+from datetime import datetime, timedelta
 
-from .models import Book, Author, Work, BookAuthor, UserBook
+from .models import Book, Author, Work, BookAuthor, UserBook, BookStat
 from .forms import BookForm, AuthorForm, WorkForm, SignUpForm
 
 
@@ -96,6 +97,17 @@ def book_detail(request, book_id):
     is_favorited = False
     if request.user.is_authenticated:
         is_favorited = UserBook.objects.filter(user=request.user, book=book).exists()
+
+    # Обновляем статистику просмотров
+    if request.user.is_authenticated:
+        stat, created = BookStat.objects.get_or_create(
+            book=book,
+            date=datetime.now().date(),
+            defaults={'views': 1}
+        )
+        if not created:
+            stat.views += 1
+            stat.save()
 
     context = {
         'book': book,
@@ -549,7 +561,63 @@ def add_review(request, book_id):
         return redirect('book_detail', book_id=book.id)
 
 
-# === ЭКСПОРТ ===
+# ============================================
+# АНАЛИТИКА
+# ============================================
+
+def analytics_dashboard(request):
+    """Страница аналитики"""
+    return render(request, 'analytics.html')
+
+
+def analytics_data(request):
+    """API для данных дашборда"""
+    # Данные за последние 30 дней
+    end_date = datetime.now().date()
+    start_date = end_date - timedelta(days=30)
+
+    # Статистика по дням
+    daily_stats = BookStat.objects.filter(
+        date__gte=start_date
+    ).values('date').annotate(
+        total_views=Sum('views'),
+        total_favorites=Sum('favorites')
+    ).order_by('date')
+
+    # Топ книг
+    top_books = Book.objects.annotate(
+        favorites_count=Count('favorited_by')
+    ).order_by('-favorites_count')[:5]
+
+    # Общая статистика
+    total_books = Book.objects.count()
+    total_favorites = UserBook.objects.count()
+    total_views = BookStat.objects.aggregate(Sum('views'))['views__sum'] or 0
+
+    data = {
+        'daily': [
+            {
+                'date': item['date'].isoformat(),
+                'total_views': item['total_views'] or 0,
+                'total_favorites': item['total_favorites'] or 0
+            }
+            for item in daily_stats
+        ],
+        'top_books': [
+            {'title': b.title, 'favorites': b.favorites_count}
+            for b in top_books
+        ],
+        'total_books': total_books,
+        'total_favorites': total_favorites,
+        'total_views': total_views,
+    }
+
+    return JsonResponse(data)
+
+
+# ============================================
+# ЭКСПОРТ
+# ============================================
 
 def export_books_csv(request):
     """Экспорт всех книг в CSV"""
@@ -621,7 +689,9 @@ def export_all_data(request):
     return export_books_csv(request)
 
 
-# === PWA ===
+# ============================================
+# PWA
+# ============================================
 
 def service_worker(request):
     """Service Worker для PWA"""
@@ -633,7 +703,9 @@ def manifest(request):
     return render(request, 'manifest.json', content_type='application/json')
 
 
-# === КАСТОМНЫЕ ОБРАБОТЧИКИ ОШИБОК ===
+# ============================================
+# КАСТОМНЫЕ ОБРАБОТЧИКИ ОШИБОК
+# ============================================
 
 def custom_404(request, exception):
     """Кастомная страница 404"""
