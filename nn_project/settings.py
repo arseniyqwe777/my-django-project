@@ -7,11 +7,29 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-8x!q3@9m#k$p2l&n5r%t^y*u(i_o=+w)z?v{a}b[c]d~e`f/g'
+# ============================================
+# БЕЗОПАСНОСТЬ: SECRET_KEY (только из переменных окружения)
+# ============================================
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY must be set in environment variables")
+
+# ============================================
+# БЕЗОПАСНОСТЬ: ALLOWED_HOSTS (ограничены)
+# ============================================
+
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+
+# ============================================
+# DEBUG (из переменных окружения)
+# ============================================
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+# ============================================
+# INSTALLED_APPS
+# ============================================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,6 +45,10 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_filters',
 ]
+
+# ============================================
+# MIDDLEWARE
+# ============================================
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,22 +82,26 @@ TEMPLATES = [
 WSGI_APPLICATION = 'nn_project.wsgi.application'
 
 # ============================================
-# БАЗА ДАННЫХ (POSTGRESQL)
+# БАЗА ДАННЫХ (POSTGRESQL) — только из переменных окружения
 # ============================================
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'nn'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'root'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT', '5432'),
         'OPTIONS': {
             'sslmode': 'disable',
         }
     }
 }
+
+# Проверка, что все переменные БД заданы
+if not all([os.environ.get('DB_NAME'), os.environ.get('DB_USER'), os.environ.get('DB_PASSWORD'), os.environ.get('DB_HOST')]):
+    raise ValueError("Database credentials must be set in environment variables")
 
 # ============================================
 # АУТЕНТИФИКАЦИЯ
