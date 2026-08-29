@@ -154,3 +154,32 @@ GitHub: [arseniyqwe777](https://github.com/arseniyqwe777)
 ---
 
 ⭐ **Если проект был полезен, поставьте звёздочку на GitHub!**
+
+## 🏗️ Архитектура проекта
+
+```mermaid
+graph TB
+    User[Пользователь] -->|HTTP| Nginx
+    Nginx -->|Прокси| Gunicorn[Django + Gunicorn]
+    Gunicorn -->|ORM| PostgreSQL[(PostgreSQL)]
+    Gunicorn -->|Кэш| Redis[(Redis)]
+    Gunicorn -->|Статика| Static[Static Files]
+    Gunicorn -->|Медиа| Media[Media Files]
+    
+    subgraph "Docker"
+        PostgreSQL
+        Redis
+        Gunicorn
+    end
+    
+    subgraph "Timeweb Cloud"
+        Docker -->|Деплой| Timeweb[App Platform]
+    end
+    
+    subgraph "GitHub"
+        Code[Код] -->|CI/CD| Actions[GitHub Actions]
+        Actions -->|Тесты| Pytest[Pytest]
+        Actions -->|Сборка| Docker
+        Docker -->|Push| Registry[Registry]
+        Registry -->|Pull| Timeweb
+    end
