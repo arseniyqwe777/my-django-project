@@ -2,13 +2,20 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# Устанавливаем зависимости
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Копируем код
 COPY . .
 
-RUN python manage.py collectstatic --noinput
+# Создаём директорию для статики
+RUN mkdir -p /app/staticfiles
+
+# ❌ УБИРАЕМ collectstatic из сборки
+# RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# ✅ Запускаем миграции, собираем статику и запускаем сервер ПРИ ЗАПУСКЕ
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"]
