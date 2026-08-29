@@ -17,5 +17,5 @@ RUN mkdir -p /app/staticfiles
 
 EXPOSE 8000
 
-# ✅ Запускаем миграции, собираем статику и запускаем сервер ПРИ ЗАПУСКЕ
-CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"]
+# ✅ Запускаем миграции, собираем статику и запускаем GUNICORN (не runserver!)
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn nn_project.wsgi:application --bind 0.0.0.0:8000"]
