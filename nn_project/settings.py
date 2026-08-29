@@ -22,6 +22,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
     'app',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_yasg',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +62,7 @@ WSGI_APPLICATION = 'nn_project.wsgi.application'
 # ============================================
 # БАЗА ДАННЫХ (POSTGRESQL)
 # ============================================
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -72,6 +77,9 @@ DATABASES = {
     }
 }
 
+# ============================================
+# АУТЕНТИФИКАЦИЯ
+# ============================================
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -87,6 +95,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# ============================================
+# ЛОКАЛИЗАЦИЯ
+# ============================================
 
 LANGUAGE_CODE = 'ru-ru'
 TIME_ZONE = 'Europe/Moscow'
@@ -161,41 +173,8 @@ NOTIFICATION_EMAIL = 'your-email@example.com'
 DEFAULT_FROM_EMAIL = 'noreply@bookbridge.ru'
 
 # ============================================
-# КЭШИРОВАНИЕ
-# ============================================
-
-if DEBUG:
-    # Локально — используем Redis
-    CACHES = {
-        'default': {
-            'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': 'redis://127.0.0.1:6379/1',
-            'OPTIONS': {
-                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-                'PICKLE_VERSION': -1,
-            },
-            'KEY_PREFIX': 'bookbridge',
-        }
-    }
-else:
-    # На сервере — локальный кэш (без Redis)
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-            'LOCATION': 'unique-snowflake',
-        }
-    }
-
-# ============================================
 # DRF (Django REST Framework)
 # ============================================
-
-INSTALLED_APPS += [
-    'rest_framework',
-    'rest_framework_simplejwt',
-    'drf_yasg',
-    'django_filters',
-]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -234,3 +213,34 @@ SIMPLE_JWT = {
 # Rate limiting
 RATELIMIT_ENABLE = True
 RATELIMIT_DEFAULT = '10/m'
+
+# ============================================
+# КЭШИРОВАНИЕ
+# ============================================
+
+import os
+
+# Определяем, где мы находимся
+IS_PRODUCTION = os.environ.get('PRODUCTION', 'False') == 'True'
+
+if IS_PRODUCTION:
+    # На Timeweb — локальный кэш (без Redis)
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-snowflake',
+        }
+    }
+else:
+    # Локально — Redis
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': 'redis://127.0.0.1:6379/1',
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+                'PICKLE_VERSION': -1,
+            },
+            'KEY_PREFIX': 'bookbridge',
+        }
+    }
