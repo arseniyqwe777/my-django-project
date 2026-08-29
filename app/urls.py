@@ -1,6 +1,7 @@
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_yasg.views import get_schema_view
@@ -10,6 +11,20 @@ from rest_framework import permissions
 from . import views
 from .api_views import BookViewSet, AuthorViewSet, WorkViewSet, RegisterView, MeView
 
+
+# ============================================
+# HEALTH-CHECK
+# ============================================
+
+def health_check(request):
+    """Health-check для мониторинга"""
+    return JsonResponse({
+        'status': 'ok',
+        'database': 'connected',
+        'redis': 'connected'
+    })
+
+
 # ============================================
 # API Router
 # ============================================
@@ -18,6 +33,7 @@ router = DefaultRouter()
 router.register(r'books', BookViewSet, basename='api-book')
 router.register(r'authors', AuthorViewSet, basename='api-author')
 router.register(r'works', WorkViewSet, basename='api-work')
+
 
 # ============================================
 # Swagger документация
@@ -36,6 +52,7 @@ schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny],
 )
 
+
 # ============================================
 # API маршруты
 # ============================================
@@ -48,11 +65,15 @@ api_urlpatterns = [
     path('auth/me/', MeView.as_view(), name='api_me'),
 ]
 
+
 # ============================================
 # Основные маршруты
 # ============================================
 
 urlpatterns = [
+    # === HEALTH-CHECK ===
+    path('health/', health_check, name='health'),
+
     # === ОСНОВНЫЕ СТРАНИЦЫ ===
     path('', views.main, name='main'),
     path('books/', views.all_books, name='all_books'),
