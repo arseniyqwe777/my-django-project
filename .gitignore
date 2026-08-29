@@ -46,3 +46,15 @@ htmlcov/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Файлы покрытия тестов
+.coverage
+.coverage.*
+.coverage.xml
+*.cover
+
+# Настройки тестов
+nn_project/test_settings.py
+
+# Структура проекта (создаётся вручную)
+project_structure.txt
