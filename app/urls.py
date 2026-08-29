@@ -1,7 +1,56 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
+
 from . import views
+from .api_views import BookViewSet, AuthorViewSet, WorkViewSet, RegisterView, MeView
+
+# ============================================
+# API Router
+# ============================================
+
+router = DefaultRouter()
+router.register(r'books', BookViewSet, basename='api-book')
+router.register(r'authors', AuthorViewSet, basename='api-author')
+router.register(r'works', WorkViewSet, basename='api-work')
+
+# ============================================
+# Swagger документация
+# ============================================
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="BookBridge API",
+        default_version='v1',
+        description="API для управления библиотекой BookBridge",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="support@bookbridge.ru"),
+        license=openapi.License(name="MIT License"),
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
+)
+
+# ============================================
+# API маршруты
+# ============================================
+
+api_urlpatterns = [
+    path('', include(router.urls)),
+    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/register/', RegisterView.as_view(), name='api_register'),
+    path('auth/me/', MeView.as_view(), name='api_me'),
+]
+
+# ============================================
+# Основные маршруты
+# ============================================
 
 urlpatterns = [
     # === ОСНОВНЫЕ СТРАНИЦЫ ===
@@ -59,6 +108,13 @@ urlpatterns = [
     # === АНАЛИТИКА ===
     path('analytics/', views.analytics_dashboard, name='analytics'),
     path('api/analytics/', views.analytics_data, name='analytics_data'),
+
+    # === API ===
+    path('api/', include(api_urlpatterns)),
+
+    # === SWAGGER ДОКУМЕНТАЦИЯ ===
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 
 # Для отображения медиафайлов в разработке
