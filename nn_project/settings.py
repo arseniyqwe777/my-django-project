@@ -173,7 +173,7 @@ LOGGING = {
     },
     'root': {
         'handlers': ['console'],
-        'level': 'DEBUG',
+        'level': 'WARNING',  # ← ИЗМЕНЕНО
     },
     'loggers': {
         'django': {
@@ -183,7 +183,7 @@ LOGGING = {
         },
         'app': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': 'INFO',  # ← ИЗМЕНЕНО
             'propagate': False,
         },
     },
@@ -195,7 +195,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # EMAIL (ОПЦИОНАЛЬНО)
 # ============================================
 
-NOTIFICATION_EMAIL = 'your-email@example.com'
+NOTIFICATION_EMAIL = os.environ.get('NOTIFICATION_EMAIL', 'noreply@bookbridge.ru')
 DEFAULT_FROM_EMAIL = 'noreply@bookbridge.ru'
 
 # ============================================
