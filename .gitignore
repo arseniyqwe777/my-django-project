@@ -57,4 +57,5 @@ desktop.ini
 nn_project/test_settings.py
 
 # Структура проекта (создаётся вручную)
-project_structure.txt
+project_structure.txt"*.sqlite3" 
+"*.sqlite3" 
